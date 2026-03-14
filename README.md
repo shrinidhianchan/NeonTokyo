@@ -1,6 +1,6 @@
 # 🏮 Neon Tokyo — Cyberpunk Japanese Restaurant Website
 
-> *A full-stack immersive web experience built with Next.js 15, React Three Fiber, Framer Motion, and a live n8n + Gemini AI backend.*
+> *A full-stack immersive web experience built with Next.js , React Three Fiber, Framer Motion, and a live n8n + Gemini AI backend.*
 
 ---
 
@@ -15,7 +15,7 @@ This project is a **production-grade, AI-integrated restaurant website** built t
 - **Real dish photography.** All 12 dish and drink images were AI-generated, optimised, and served through Next.js Image for automatic WebP conversion and lazy loading.
 - **Fully typed.** The entire codebase is TypeScript with strict types across all components, hooks, and data shapes.
 
-The aesthetic is 2099 Neon Tokyo — but the engineering is production 2026.
+The aesthetic is 2099 Neon Tokyo.
 
 ---
 
@@ -109,7 +109,7 @@ Response JSON  →  KAI-01 Terminal UI
 ### 📋 Holo-Menu
 - Categorised list (Starters / Main / Desserts / Drinks) with real thumbnails
 - Expandable rows reveal full description + calories
-- Vegetarian indicators, spice flame icons, all prices in ₹
+- Vegetarian indicators, spice flame icons
 
 ### 🧬 Biometric Menu Filter
 - Filter the full menu by biometric state: System Normal · High Energy · Deep Focus · Zen State
@@ -125,11 +125,6 @@ Response JSON  →  KAI-01 Terminal UI
 - Bookings Tab: name, time, guests, phone, spice level, method, timestamp
 - Chats Tab: expandable session transcripts
 - Purge button to clear each tab independently
-
-### ⭐ Neural Testimonials
-- Dual infinite-scroll marquee of 8 verified diner reviews (Jan–Mar 2026)
-- Per-reviewer accent colors, star ratings, dish tags, and verified badges
-- Aggregate 5.0 ★ / 247 verified diners rating
 
 ### 🎨 Cyberpunk Design System
 - Color palette: Carbon `#050505` · Neon Cyan `#00ffff` · Magenta `#ff007f`
@@ -186,21 +181,4 @@ Response JSON  →  KAI-01 Terminal UI
 
 ---
 
-## ⚡ Getting Started
-
-```bash
-git clone <your-repo-url>
-cd tokyoneon-resturant/frontend
-npm install
-
-# Create .env.local
-echo 'NEXT_PUBLIC_N8N_WEBHOOK_URL=<your-n8n-chat-webhook-url>' > .env.local
-
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) — the Neural Link is live.
-
----
-
-*Built with 🌸 wabi-sabi and ⚡ neon voltage — Neon Tokyo, 2026.*
+*Built with 🌸 wabi-sabi and ⚡ neon voltage — Neon Tokyo. 
