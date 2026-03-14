@@ -6,6 +6,7 @@ import BookingTerminal from "@/components/BookingTerminal";
 import SignatureDishes from "@/components/SignatureDishes";
 import DynamicMenu from "@/components/DynamicMenu";
 import Footer from "@/components/Footer";
+import DataLogs from "@/components/DataLogs";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <BookingTerminal />
       <DynamicMenu />
       <AIWidget />
+      <DataLogs />
       <Footer />
     </main>
   );

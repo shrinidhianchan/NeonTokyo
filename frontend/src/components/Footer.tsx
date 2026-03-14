@@ -27,7 +27,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] text-cyan/50 font-mono uppercase tracking-widest mb-1">Comm_Link</span>
-                <span className="font-mono text-sm tracking-wider">+91 98765 43210</span>
+                <span className="font-mono text-sm tracking-wider">+91 ---------------</span>
               </div>
             </div>
           </div>

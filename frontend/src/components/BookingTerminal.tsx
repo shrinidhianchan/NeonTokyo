@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, User, Phone, MessageSquare, Flame } from "lucide-react";
+import { BOOKINGS_KEY } from "./DataLogs";
 
 export default function BookingTerminal() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
@@ -52,6 +53,22 @@ export default function BookingTerminal() {
     
     setStatus("processing");
     
+    // Save to localStorage
+    const newBooking = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      timestamp: new Date().toISOString(),
+      name,
+      phone,
+      time: selectedSlot,
+      guests,
+      spicePreference: spiceLevel,
+      method,
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+      localStorage.setItem(BOOKINGS_KEY, JSON.stringify([...existing, newBooking]));
+    } catch { /* storage full or unavailable */ }
+
     // Send data to n8n webhook (Save to Google Sheet)
     try {
       await fetch("https://n8n.example.com/webhook/booking", {
@@ -59,12 +76,12 @@ export default function BookingTerminal() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, phone, time: selectedSlot, guests, spicePreference: spiceLevel, method }),
       });
-      
+
       if (method === 'whatsapp') {
         const waText = encodeURIComponent(`Initiating Protocol\nName: ${name}\nTime: ${selectedSlot}\nGuests: ${guests}\nSpice: ${spiceLevel}`);
         window.open(`https://wa.me/919999999999?text=${waText}`, "_blank");
       }
-      
+
       setTimeout(() => setStatus("confirmed"), 1000);
     } catch (err) {
       setTimeout(() => setStatus("confirmed"), 1000);
@@ -72,7 +89,7 @@ export default function BookingTerminal() {
   };
 
   return (
-    <section className="relative py-24 bg-carbon z-10 w-full px-4 md:px-12 flex flex-col items-center">
+    <section id="reservation-hud" className="relative py-24 bg-carbon z-10 w-full px-4 md:px-12 flex flex-col items-center">
       <div className="w-full max-w-5xl glass-panel p-8 md:p-12 rounded-2xl relative overflow-hidden border border-cyan/30 shadow-[0_0_20px_rgba(0,255,255,0.15)]">
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-magenta to-transparent animate-scanline" />
         

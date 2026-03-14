@@ -2,24 +2,152 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
 
 type Biometric = "all" | "high_energy" | "focus" | "calm";
-type Category = "Starters" | "Main" | "Synthetic Liquors";
+type Category = "Starters" | "Main" | "Desserts" | "Synthetic Liquors";
+
+/** Per-dish visual config */
+const dishTheme: Record<number, { color1: string; color2: string; kanji: string }> = {
+  1: { color1: "#00ff88", color2: "#00ccff", kanji: "豆" },
+  2: { color1: "#ff003c", color2: "#ff7700", kanji: "餃" },
+  3: { color1: "#00ffff", color2: "#0044ff", kanji: "弁" },
+  4: { color1: "#ffcc00", color2: "#ff6600", kanji: "麺" },
+  5: { color1: "#cc88ff", color2: "#0099ff", kanji: "酒" },
+  6: { color1: "#88ddff", color2: "#ffffff", kanji: "冷" },
+};
+
+function AnimatedDishImage({ id, highlighted }: { id: number; highlighted: boolean }) {
+  const theme = dishTheme[id] ?? { color1: "#00ffff", color2: "#ff007f", kanji: "食" };
+  const particles = Array.from({ length: 8 }, (_, i) => i);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Base gradient */}
+      <motion.div
+        className="absolute inset-0"
+        animate={{ opacity: highlighted ? [0.4, 0.75, 0.4] : [0.1, 0.2, 0.1] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          background: `radial-gradient(ellipse at 50% 60%, ${theme.color1}28 0%, ${theme.color2}14 50%, transparent 80%)`
+        }}
+      />
+
+      {/* Outer rotating ring */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+      >
+        <div className="rounded-full border" style={{
+          width: "72%", height: "72%",
+          borderColor: `${theme.color1}${highlighted ? "40" : "18"}`,
+        }} />
+      </motion.div>
+
+      {/* Inner counter-rotating ring */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        animate={{ rotate: -360 }}
+        transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+      >
+        <div className="rounded-full border border-dashed" style={{
+          width: "46%", height: "46%",
+          borderColor: `${theme.color2}${highlighted ? "50" : "20"}`,
+        }} />
+      </motion.div>
+
+      {/* Pulsing glow core */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        animate={{ scale: [1, 1.18, 1], opacity: highlighted ? [0.5, 1, 0.5] : [0.1, 0.3, 0.1] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div className="rounded-full blur-2xl" style={{
+          width: "36%", height: "36%",
+          background: `radial-gradient(circle, ${theme.color1}55, ${theme.color2}33)`
+        }} />
+      </motion.div>
+
+      {/* Kanji character */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <motion.span
+          animate={{ opacity: highlighted ? [0.08, 0.18, 0.08] : [0.02, 0.05, 0.02], scale: [0.95, 1.04, 0.95] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="font-black leading-none"
+          style={{ fontSize: "5rem", color: theme.color1, textShadow: `0 0 30px ${theme.color1}` }}
+        >
+          {theme.kanji}
+        </motion.span>
+      </div>
+
+      {/* Orbital particles */}
+      {particles.map((i) => {
+        const angle = (i / particles.length) * 360;
+        const r = 30 + (i % 3) * 8;
+        const cx = 50 + r * Math.cos((angle * Math.PI) / 180);
+        const cy = 50 + r * Math.sin((angle * Math.PI) / 180);
+        return (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              left: `${cx}%`, top: `${cy}%`,
+              width: 3, height: 3,
+              translateX: "-50%", translateY: "-50%",
+              backgroundColor: i % 2 === 0 ? theme.color1 : theme.color2,
+              boxShadow: `0 0 6px ${i % 2 === 0 ? theme.color1 : theme.color2}`,
+            }}
+            animate={{
+              opacity: highlighted ? [0, 1, 0] : [0, 0.3, 0],
+              scale: [0.5, 1.5, 0.5],
+              y: [0, -8, 0],
+            }}
+            transition={{
+              duration: 2 + (i % 3) * 0.7,
+              repeat: Infinity,
+              delay: (i / particles.length) * 2.5,
+              ease: "easeInOut",
+            }}
+          />
+        );
+      })}
+
+      {/* Horizontal scan line */}
+      <motion.div
+        className="absolute left-0 right-0 h-px pointer-events-none"
+        style={{
+          background: `linear-gradient(90deg, transparent, ${theme.color1}${highlighted ? "bb" : "44"}, transparent)`
+        }}
+        animate={{ top: ["0%", "100%", "0%"] }}
+        transition={{ duration: highlighted ? 3 : 5, repeat: Infinity, ease: "linear" }}
+      />
+
+      {/* Corner brackets */}
+      <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t border-l" style={{ borderColor: `${theme.color1}60` }} />
+      <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b border-r" style={{ borderColor: `${theme.color2}60` }} />
+    </div>
+  );
+}
 
 const menuItems = [
-  { id: 1, name: "Edamame Glitch", category: "Starters", biometric: "calm", price: "¥800", desc: "Steamed pods with digital sea salt and calm-inducing enzymes.", image: "/photos/edamame.jpg" },
-  { id: 2, name: "Neon Gyoza", category: "Starters", biometric: "high_energy", price: "¥1,200", desc: "Spicy pork with magma chili oil. Promotes hyper-reactivity.", image: "/photos/gyoza.jpg" },
-  { id: 3, name: "Cyber-Bento", category: "Main", biometric: "focus", price: "¥4,500", desc: "Nutrient-dense omakase selection optimized for deep coding sessions.", image: "/photos/bento.jpg" },
-  { id: 4, name: "Udon.exe", category: "Main", biometric: "high_energy", price: "¥2,800", desc: "Thick noodles in high-voltage broth. 100% stamina boost.", image: "/photos/udon.jpg" },
-  { id: 5, name: "Neuro-Gin", category: "Synthetic Liquors", biometric: "focus", price: "¥1,500", desc: "Botanical AI-distilled spirit to align synaptic pathways.", image: "/photos/gin.jpg" },
-  { id: 6, name: "Void Sake", category: "Synthetic Liquors", biometric: "calm", price: "¥2,000", desc: "Served at absolute zero. Quiets the inner monologue.", image: "/photos/sake.jpg" },
+  { id: 1, name: "Edamame Glitch",  category: "Starters",          biometric: "calm",        price: "₹650",   desc: "Steamed pods with digital sea salt and calm-inducing enzymes.",                             image: "/photos/edamame-glitch.jpg" },
+  { id: 2, name: "Neon Gyoza",      category: "Starters",          biometric: "high_energy", price: "₹950",   desc: "Spicy pork dumplings with magma chili oil. Promotes hyper-reactivity.",                   image: "/photos/neon-gyoza.jpg" },
+  { id: 3, name: "Neon Takoyaki",   category: "Starters",          biometric: "high_energy", price: "₹780",   desc: "8 octopus dumplings with liquid-glass okonomiyaki sauce and dancing bonito flakes.",       image: "/photos/neon-takoyaki.jpg" },
+  { id: 4, name: "Glitch-Sashimi", category: "Starters",          biometric: "calm",        price: "₹3,200", desc: "Precision-cut Bluefin Tuna, Salmon & Yellowtail with bioluminescent wasabi-yuzu glaze.",   image: "/photos/glitch-sashimi.jpg" },
+  { id: 5, name: "Cyber-Bento",     category: "Main",              biometric: "focus",       price: "₹3,500", desc: "Nutrient-dense omakase bento optimized for deep coding sessions.",                        image: "/photos/cyber-bento.jpg" },
+  { id: 6, name: "Cyber-Ramen",     category: "Main",              biometric: "high_energy", price: "₹1,950", desc: "48-hr Tonkotsu broth with black-garlic data-oil, chashu pork, and neon tamago.",           image: "/photos/cyber-ramen.jpg" },
+  { id: 7, name: "Udon.exe",        category: "Main",              biometric: "high_energy", price: "₹2,200", desc: "Thick noodles in high-voltage broth with tempura prawn. 100% stamina boost.",             image: "/photos/udon-exe.jpg" },
+  { id: 8, name: "Neon Wagyu",      category: "Main",              biometric: "focus",       price: "₹9,500", desc: "A5 Wagyu plasma-seared at 2,400°C. Bioluminescent marbling. Edible gold flakes.",          image: "/photos/neon-wagyu.jpg" },
+  { id: 9, name: "Quantum Matcha",  category: "Desserts",          biometric: "calm",        price: "₹1,800", desc: "Ceremonial-grade Uji matcha mousse with 24K gold leaf and bamboo charcoal crumble.",       image: "/photos/quantum-matcha.jpg" },
+  { id: 10, name: "Neuro-Gin",      category: "Synthetic Liquors", biometric: "focus",       price: "₹1,400", desc: "Botanical AI-distilled spirit to align synaptic pathways.",                              image: "/photos/neuro-gin.jpg" },
+  { id: 11, name: "Void Sake",      category: "Synthetic Liquors", biometric: "calm",        price: "₹1,800", desc: "Served at absolute zero. Quiets the inner monologue.",                                   image: "/photos/void-sake.jpg" },
 ];
 
 export default function DynamicMenu() {
   const [activeBio, setActiveBio] = useState<Biometric>("all");
 
-  const categories: Category[] = ["Starters", "Main", "Synthetic Liquors"];
+  const categories: Category[] = ["Starters", "Main", "Desserts", "Synthetic Liquors"];
   const biometrics: { id: Biometric; label: string }[] = [
     { id: "all", label: "System Normal" },
     { id: "high_energy", label: "High Energy" },
@@ -35,7 +163,7 @@ export default function DynamicMenu() {
             <h2 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-magenta to-cyan uppercase tracking-widest mb-4 text-cyber-glitch">
               Full Neural Menu
             </h2>
-            <p className="text-cyan/60 font-mono text-sm tracking-wider">VIEW COMPLETE DATABASE. INSERT VISUAL ASSETS INTO DIRECTORY.</p>
+            <p className="text-cyan/60 font-mono text-sm tracking-wider">FULL NEURAL DATABASE · FILTER BY BIOMETRIC STATE</p>
           </div>
           
           <div className="flex flex-wrap gap-3">
@@ -88,17 +216,27 @@ export default function DynamicMenu() {
                           <div className="absolute top-0 left-0 w-1 h-full bg-magenta shadow-[0_0_10px_rgba(255,0,127,0.8)] z-20" />
                         )}
                         
-                        {/* Image Slot */}
-                        <div className="w-full md:w-48 h-48 rounded-lg border border-cyan/20 overflow-hidden relative bg-carbon flex-shrink-0 group">
-                          {/* Replace this div with an <img> tag once photos are added to public/photos directory */}
-                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-carbon/80 text-cyan/30 group-hover:bg-cyan/10 group-hover:text-cyan/70 transition-colors z-10">
-                            <ImageIcon className="w-8 h-8 mb-2" />
-                            <span className="font-mono text-xs text-center px-4 tracking-widest uppercase">Add Image<br/>{item.image}</span>
-                          </div>
-                          
-                          {/* Cyber Grid Pattern Background for visual flair while empty */}
-                          <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.05)_1px,transparent_1px)] bg-[size:10px_10px] z-0" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-carbon to-transparent z-0 opacity-50" />
+                        {/* Real Dish Image */}
+                        <div className="w-full md:w-48 h-48 rounded-lg border overflow-hidden relative bg-carbon shrink-0 transition-all duration-500 group/img"
+                          style={{ borderColor: isHighlighted ? "rgba(0,255,255,0.4)" : "rgba(0,255,255,0.1)" }}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover/img:scale-110"
+                            sizes="(max-width: 768px) 100vw, 192px"
+                          />
+                          {/* Neon tint on non-highlighted */}
+                          {!isHighlighted && <div className="absolute inset-0 bg-carbon/50" />}
+                          {/* Scan sweep on highlighted */}
+                          {isHighlighted && (
+                            <motion.div
+                              className="absolute left-0 right-0 h-px pointer-events-none"
+                              style={{ background: "linear-gradient(90deg, transparent, rgba(0,255,255,0.8), transparent)" }}
+                              animate={{ top: ["0%", "100%", "0%"] }}
+                              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                            />
+                          )}
                         </div>
 
                         {/* Text Content */}
@@ -115,7 +253,7 @@ export default function DynamicMenu() {
                             }`}>
                               BIO_DATA: {item.biometric.replace('_', ' ')}
                             </span>
-                            <div className="h-[1px] flex-1 bg-gradient-to-r from-cyan/20 to-transparent" />
+                            <div className="h-px flex-1 bg-gradient-to-r from-cyan/20 to-transparent" />
                           </div>
                         </div>
                       </motion.div>
