@@ -1,12 +1,12 @@
 # 🏮 Neon Tokyo — Cyberpunk Japanese Restaurant
 
-> *A 2099-inspired immersive restaurant website. Built in 2026, designed for the future.*
+> *A 2099-inspired immersive restaurant website. designed for the future.*
 
 ---
 
 ## 🚀 Vision
 
-Neon Tokyo is not just a restaurant website — it is a **Neural Link interface**. Visitors enter a digital megacity where food is art, the menu is holographic, and the host is an AI. The 2099 aesthetic wraps a fully operational 2026 restaurant experience: real menus, real prices in ₹, real bookings via WhatsApp, and a live AI chat agent powered by Google Gemini and n8n.
+Neon Tokyo is not just a restaurant website — it is a **Neural Link interface**. Visitors enter a digital megacity where food is art, the menu is holographic, and the host is an AI. The 2099 aesthetic wraps a fully operational restaurant experience: real menus, real prices in ₹, real bookings via WhatsApp, and a live AI chat agent powered by Google Gemini and n8n.
 
 The website is designed as a high-fidelity **"terminal-first"** experience — featuring 3D WebGL dish animations, cyberpunk glassmorphism UI, cinematic scroll-driven storytelling, and a persistent data logging system that runs entirely in the browser.
 
