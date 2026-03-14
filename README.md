@@ -1,14 +1,21 @@
-# 🏮 Neon Tokyo — Cyberpunk Japanese Restaurant
+# 🏮 Neon Tokyo — Cyberpunk Japanese Restaurant Website
 
-> *A 2099-inspired immersive restaurant website. designed for the future.*
+> *A full-stack immersive web experience built with Next.js 15, React Three Fiber, Framer Motion, and a live n8n + Gemini AI backend.*
 
 ---
 
 ## 🚀 Vision
 
-Neon Tokyo is not just a restaurant website — it is a **Neural Link interface**. Visitors enter a digital megacity where food is art, the menu is holographic, and the host is an AI. The 2099 aesthetic wraps a fully operational restaurant experience: real menus, real prices in ₹, real bookings via WhatsApp, and a live AI chat agent powered by Google Gemini and n8n.
+This project is a **production-grade, AI-integrated restaurant website** built to push the limit of what a modern web frontend can do — without a traditional backend. Every piece of the stack was chosen deliberately:
 
-The website is designed as a high-fidelity **"terminal-first"** experience — featuring 3D WebGL dish animations, cyberpunk glassmorphism UI, cinematic scroll-driven storytelling, and a persistent data logging system that runs entirely in the browser.
+- **No backend server.** The AI chat runs through n8n webhooks. Booking and chat data persist in the browser via `localStorage`. The entire app deploys as a static Next.js site on Vercel.
+- **Real AI integration.** The KAI-01 chat widget connects live to a Gemini Flash model orchestrated by an n8n workflow — including session memory via `sessionId`, animated Thought Trace loading, graceful error handling, and a retry system.
+- **3D in the browser.** React Three Fiber renders a custom WebGL shader mesh that morphs in response to scroll position — no canvas libraries, raw GLSL.
+- **Design-engineering parity.** Every animation (3D card tilt, scan-sweep, infinite marquee, biometric filter dim/blur) is implemented in Framer Motion with no pre-built component libraries — all written from scratch.
+- **Real dish photography.** All 12 dish and drink images were AI-generated, optimised, and served through Next.js Image for automatic WebP conversion and lazy loading.
+- **Fully typed.** The entire codebase is TypeScript with strict types across all components, hooks, and data shapes.
+
+The aesthetic is 2099 Neon Tokyo — but the engineering is production 2026.
 
 ---
 
