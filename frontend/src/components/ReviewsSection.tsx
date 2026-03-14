@@ -23,7 +23,7 @@ const reviews: Review[] = [
     handle: "@arjun_eats",
     avatar: "A",
     rating: 5,
-    date: "March 2099",
+    date: "14 Mar 2026",
     text: "The Cyber-Ramen hit different. That 48-hour broth is criminally good. I could taste the black garlic data-oil through every single bite. Worth every rupee. KAI-01 even recommended it to me perfectly.",
     dish: "Cyber-Ramen",
     badge: "Verified Diner",
@@ -35,7 +35,7 @@ const reviews: Review[] = [
     handle: "@priya.n8n",
     avatar: "P",
     rating: 5,
-    date: "March 2099",
+    date: "13 Mar 2026",
     text: "I have never felt so immersed in a dining experience. The Aero-Sashimi was not just food, it was theatre. The neon atmosphere, the holographic menu, the AI host — 10/10 would return every week.",
     dish: "Aero-Sashimi",
     badge: "Top Reviewer",
@@ -44,10 +44,10 @@ const reviews: Review[] = [
   {
     id: 3,
     name: "Rohan Sharma",
-    handle: "@rohaneats2099",
+    handle: "@rohaneats2026",
     avatar: "R",
     rating: 5,
-    date: "February 2099",
+    date: "10 Mar 2026",
     text: "Booked via WhatsApp in 30 seconds and the table was ready exactly on time. Neon Wagyu was a spiritual experience. The plasma-seared crust with gold flakes — absolutely legendary.",
     dish: "Neon Wagyu",
     badge: "Gold Member",
@@ -59,8 +59,8 @@ const reviews: Review[] = [
     handle: "@sneha_techfoodie",
     avatar: "S",
     rating: 5,
-    date: "March 2099",
-    text: "The chatbot KAI-01 is genuinely impressive. Asked it to pair a drink with my Cyber-Bento and it gave a full breakdown with reasoning. The Void Sake recommendation was spot on!",
+    date: "8 Mar 2026",
+    text: "The chatbot KAI-01 is genuinely impressive. Asked it to pair a drink with my Cyber-Bento and it gave a full breakdown with reasoning. The Sakura Bloom Tea suggestion was perfect — light, elegant, and calming.",
     dish: "Cyber-Bento",
     badge: "AI Enthusiast",
     color: "#cc88ff",
@@ -71,7 +71,7 @@ const reviews: Review[] = [
     handle: "@vikram_neon",
     avatar: "V",
     rating: 5,
-    date: "January 2099",
+    date: "28 Feb 2026",
     text: "Took my entire team here for a dinner. Neon Takoyaki as a starter was a masterpiece. The bonito flakes dancing on the okonomiyaki sauce looked alive. Everyone was stunned.",
     dish: "Neon Takoyaki",
     badge: "Verified Diner",
@@ -83,7 +83,7 @@ const reviews: Review[] = [
     handle: "@ananya.bites",
     avatar: "A",
     rating: 5,
-    date: "March 2099",
+    date: "22 Feb 2026",
     text: "Quantum Matcha dessert is the most elegant thing I have ever put in my mouth. The gold leaf, the bamboo charcoal crumble — every layer had its own personality. A must-order.",
     dish: "Quantum Matcha",
     badge: "Food Critic",
@@ -95,7 +95,7 @@ const reviews: Review[] = [
     handle: "@devk_foodtech",
     avatar: "D",
     rating: 5,
-    date: "February 2099",
+    date: "15 Feb 2026",
     text: "That biometric filter on the menu is a genius UX idea. Chose Deep Focus mode and it showed me the Cyber-Bento and Yuzu Matcha Latte — honestly exactly what I needed for a late work dinner. Zero sugar crash.",
     dish: "Yuzu Matcha Latte",
     badge: "Power User",
@@ -107,7 +107,7 @@ const reviews: Review[] = [
     handle: "@meera_gourmand",
     avatar: "M",
     rating: 5,
-    date: "March 2099",
+    date: "20 Jan 2026",
     text: "Glitch-Sashimi platter made me rethink what sashimi can be. The bioluminescent wasabi-yuzu glaze was a revelation. The whole neon Tokyo aesthetic is totally addictive. Already rebooked.",
     dish: "Glitch-Sashimi",
     badge: "Top Reviewer",
@@ -142,7 +142,7 @@ function ReviewCard({ review }: { review: Review }) {
     >
       {/* Top left accent */}
       <div
-        className="absolute top-0 left-0 w-12 h-[2px] rounded-tl-2xl"
+        className="absolute top-0 left-0 w-12 h-px rounded-tl-2xl"
         style={{ background: review.color }}
       />
 
@@ -161,7 +161,7 @@ function ReviewCard({ review }: { review: Review }) {
 
       {/* Review text */}
       <p className="text-white/75 font-mono text-xs leading-relaxed flex-1">
-        "{review.text}"
+        &ldquo;{review.text}&rdquo;
       </p>
 
       {/* Dish tag */}
