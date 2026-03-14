@@ -77,8 +77,8 @@ Utilizing React Three Fiber, signature dishes are rendered in a 3D canvas that r
 * **Scroll-to-Rotate:** Dishes spin 360° to reveal textures and craftsmanship as you scroll.
 * **Liquid Morphing:** Organic visual transitions utilizing custom WebGL shaders.
 
-### 3. ❄️ Icy Glass HUD
-The UI is a masterpiece of Cyberpunk Glassmorphism:
+### 3. ❄️ Cyberpunk Glassmorphism
+The interface implements a high-fidelity "terminal" aesthetic:
 * High backdrop-blur panels with 1px glowing cyan and magenta borders.
 * Scanline overlays and subtle phosphor-glow drop shadows.
 * Kinetic Typography that responds to interaction.

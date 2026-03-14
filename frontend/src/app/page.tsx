@@ -5,6 +5,7 @@ import AIWidget from "@/components/AIWidget";
 import BookingTerminal from "@/components/BookingTerminal";
 import SignatureDishes from "@/components/SignatureDishes";
 import DynamicMenu from "@/components/DynamicMenu";
+import ReviewsSection from "@/components/ReviewsSection";
 import Footer from "@/components/Footer";
 import DataLogs from "@/components/DataLogs";
 
@@ -17,6 +18,7 @@ export default function Home() {
       <MenuSection />
       <BookingTerminal />
       <DynamicMenu />
+      <ReviewsSection />
       <AIWidget />
       <DataLogs />
       <Footer />

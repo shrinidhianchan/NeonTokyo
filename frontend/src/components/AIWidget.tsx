@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Terminal, X } from "lucide-react";
+import { Send, Terminal, X, Trash2 } from "lucide-react";
 import { CHATS_KEY } from "./DataLogs";
 
 const INITIAL_MSG = { role: 'ai' as const, content: 'INITIALIZING KAI-01 NEURAL LINK... READY.' };
@@ -45,6 +45,24 @@ export default function AIWidget() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isThinking, thoughtTrace]);
+
+  const handleClear = () => {
+    // Archive current session before clearing (if it has user messages)
+    const userMsgs = messages.filter((m) => m.role === 'user');
+    if (userMsgs.length > 0) {
+      try {
+        const existing = JSON.parse(localStorage.getItem(CHATS_KEY) || '[]');
+        const sessionEntry = { id: sessionId.current, timestamp: new Date().toISOString(), messages };
+        const filtered = existing.filter((s: { id: string }) => s.id !== sessionId.current);
+        localStorage.setItem(CHATS_KEY, JSON.stringify([...filtered, sessionEntry]));
+      } catch { /* ignore */ }
+    }
+    // Reset to a fresh session
+    sessionId.current = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    lastMessage.current = '';
+    setMessages([INITIAL_MSG]);
+    localStorage.removeItem(MESSAGES_STORAGE_KEY);
+  };
 
   const handleClose = () => {
     const userMsgs = messages.filter((m) => m.role === 'user');
@@ -197,13 +215,26 @@ export default function AIWidget() {
                   <p className="text-cyan/40 font-mono text-[10px] tracking-widest leading-none mt-0.5">NEURAL LINK ACTIVE</p>
                 </div>
               </div>
-              <button
-                onClick={handleClose}
-                suppressHydrationWarning
-                className="w-8 h-8 flex items-center justify-center rounded-full text-white/40 hover:text-white hover:bg-white/10 transition-all"
-              >
-                <X size={16} />
-              </button>
+              <div className="flex items-center gap-1">
+                {/* Clear / New Session button */}
+                <button
+                  onClick={handleClear}
+                  suppressHydrationWarning
+                  title="Clear chat"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                >
+                  <Trash2 size={14} />
+                </button>
+                {/* Close button */}
+                <button
+                  onClick={handleClose}
+                  suppressHydrationWarning
+                  title="Close"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-white/40 hover:text-white hover:bg-white/10 transition-all"
+                >
+                  <X size={16} />
+                </button>
+              </div>
             </div>
 
             {/* ── Scanline strip ── */}

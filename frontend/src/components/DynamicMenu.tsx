@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 type Biometric = "all" | "high_energy" | "focus" | "calm";
-type Category = "Starters" | "Main" | "Desserts" | "Synthetic Liquors";
+type Category = "Starters" | "Main" | "Desserts" | "Drinks";
 
 /** Per-dish visual config */
 const dishTheme: Record<number, { color1: string; color2: string; kanji: string }> = {
@@ -139,15 +139,16 @@ const menuItems = [
   { id: 6, name: "Cyber-Ramen",     category: "Main",              biometric: "high_energy", price: "₹1,950", desc: "48-hr Tonkotsu broth with black-garlic data-oil, chashu pork, and neon tamago.",           image: "/photos/cyber-ramen.jpg" },
   { id: 7, name: "Udon.exe",        category: "Main",              biometric: "high_energy", price: "₹2,200", desc: "Thick noodles in high-voltage broth with tempura prawn. 100% stamina boost.",             image: "/photos/udon-exe.jpg" },
   { id: 8, name: "Neon Wagyu",      category: "Main",              biometric: "focus",       price: "₹9,500", desc: "A5 Wagyu plasma-seared at 2,400°C. Bioluminescent marbling. Edible gold flakes.",          image: "/photos/neon-wagyu.jpg" },
-  { id: 9, name: "Quantum Matcha",  category: "Desserts",          biometric: "calm",        price: "₹1,800", desc: "Ceremonial-grade Uji matcha mousse with 24K gold leaf and bamboo charcoal crumble.",       image: "/photos/quantum-matcha.jpg" },
-  { id: 10, name: "Neuro-Gin",      category: "Synthetic Liquors", biometric: "focus",       price: "₹1,400", desc: "Botanical AI-distilled spirit to align synaptic pathways.",                              image: "/photos/neuro-gin.jpg" },
-  { id: 11, name: "Void Sake",      category: "Synthetic Liquors", biometric: "calm",        price: "₹1,800", desc: "Served at absolute zero. Quiets the inner monologue.",                                   image: "/photos/void-sake.jpg" },
+  { id: 9,  name: "Quantum Matcha",    category: "Desserts", biometric: "calm",        price: "₹1,800", desc: "Ceremonial-grade Uji matcha mousse with 24K gold leaf and bamboo charcoal crumble.",       image: "/photos/quantum-matcha.jpg" },
+  { id: 10, name: "Yuzu Matcha Latte", category: "Drinks",   biometric: "calm",        price: "₹750",   desc: "Ceremonial matcha layered with yuzu-infused oat milk. Energises without the neural crash.", image: "/photos/yuzu-matcha-latte.jpg" },
+  { id: 11, name: "Sakura Bloom Tea",  category: "Drinks",   biometric: "calm",        price: "₹620",   desc: "Yoshino cherry blossom petals steeped in mineral water. Calms the hippocampus.",           image: "/photos/sakura-tea.jpg" },
+  { id: 12, name: "Cyber Ramune",      category: "Drinks",   biometric: "high_energy", price: "₹550",   desc: "Japanese marble-sealed soda with neon electric-blue citrus fizz. Classic 2099 refresh.",   image: "/photos/cyber-ramune.jpg" },
 ];
 
 export default function DynamicMenu() {
   const [activeBio, setActiveBio] = useState<Biometric>("all");
 
-  const categories: Category[] = ["Starters", "Main", "Desserts", "Synthetic Liquors"];
+  const categories: Category[] = ["Starters", "Main", "Desserts", "Drinks"];
   const biometrics: { id: Biometric; label: string }[] = [
     { id: "all", label: "System Normal" },
     { id: "high_energy", label: "High Energy" },

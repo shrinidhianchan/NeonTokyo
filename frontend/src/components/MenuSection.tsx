@@ -86,17 +86,18 @@ const menuItems: MenuItem[] = [
   { id: 8,  name: "Neon Wagyu (200g)",   category: "Main",              price: "₹9,500", spice: 1, veg: false, calories: 620, image: "/photos/neon-wagyu.jpg",        desc: "A5 Wagyu plasma-seared at 2,400°C. Bioluminescent marbling, edible gold, truffle oil." },
   // Desserts
   { id: 9,  name: "Quantum Matcha",      category: "Desserts",          price: "₹1,800", spice: 0, veg: true,  calories: 310, image: "/photos/quantum-matcha.jpg",    desc: "Ceremonial-grade Uji matcha mousse with gold leaf and activated bamboo charcoal crumble." },
-  // Drinks
-  { id: 10, name: "Neuro-Gin",           category: "Synthetic Liquors", price: "₹1,400", spice: 0, veg: true,  calories: 130, image: "/photos/neuro-gin.jpg",         desc: "Botanical AI-distilled gin with edible teal ice and whispering botanical mist. Aligns synaptic pathways." },
-  { id: 11, name: "Void Sake",           category: "Synthetic Liquors", price: "₹1,800", spice: 0, veg: true,  calories: 110, image: "/photos/void-sake.jpg",         desc: "Premium dark-brew sake served at absolute zero. Quiets the inner monologue." },
+  // Drinks (non-alcoholic)
+  { id: 10, name: "Yuzu Matcha Latte", category: "Drinks", price: "₹750",   spice: 0, veg: true, calories: 140, image: "/photos/yuzu-matcha-latte.jpg", desc: "Ceremonial matcha cold-layered with yuzu-infused oat milk. Energises without the neural crash." },
+  { id: 11, name: "Sakura Bloom Tea",  category: "Drinks", price: "₹620",   spice: 0, veg: true, calories: 15,  image: "/photos/sakura-tea.jpg",        desc: "Hand-picked Yoshino cherry blossom petals steeped in mineral water. Calms the hippocampus." },
+  { id: 12, name: "Cyber Ramune",      category: "Drinks", price: "₹550",   spice: 0, veg: true, calories: 90,  image: "/photos/cyber-ramune.jpg",     desc: "Japanese marble-sealed soda with neon electric-blue citrus fizz. Classic 2099 refreshment." },
 ];
 
-const categories = ["Starters", "Main", "Desserts", "Synthetic Liquors"] as const;
+const categories = ["Starters", "Main", "Desserts", "Drinks"] as const;
 const catColor: Record<string, string> = {
   Starters: "#00ffff",
   Main: "#ff007f",
   Desserts: "#00ff88",
-  "Synthetic Liquors": "#cc88ff",
+  Drinks: "#cc88ff",
 };
 
 // ─── Menu Row Component ────────────────────────────────────────────────────────
