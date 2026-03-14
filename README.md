@@ -45,7 +45,7 @@ The aesthetic is 2099 Neon Tokyo — but the engineering is production 2026.
 |---|---|
 | **Model** | `gemini-2.0-flash` |
 | **Provider** | Google DeepMind |
-| **Access** | Google AI Studio / Vertex AI API |
+| **Access** | Google AI Studio  |
 | **Role** | Core conversational reasoning for KAI-01 Neural Concierge |
 | **Context Window** | 1M tokens |
 | **Capabilities Used** | Multi-turn conversation, menu-aware recommendations, booking guidance, JSON-structured output |
