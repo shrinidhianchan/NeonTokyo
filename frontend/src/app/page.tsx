@@ -7,7 +7,7 @@ import SignatureDishes from "@/components/SignatureDishes";
 import DynamicMenu from "@/components/DynamicMenu";
 import ReviewsSection from "@/components/ReviewsSection";
 import Footer from "@/components/Footer";
-import DataLogs from "@/components/DataLogs";
+
 
 export default function Home() {
   return (
@@ -20,7 +20,7 @@ export default function Home() {
       <DynamicMenu />
       <ReviewsSection />
       <AIWidget />
-      <DataLogs />
+
       <Footer />
     </main>
   );

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Terminal, X, Trash2 } from "lucide-react";
-import { CHATS_KEY } from "./DataLogs";
+const CHATS_KEY = "neon_tokyo_chats";
 
 const INITIAL_MSG = { role: 'ai' as const, content: 'INITIALIZING KAI-01 NEURAL LINK... READY.' };
 const MESSAGES_STORAGE_KEY = 'neon_tokyo_active_chat';
@@ -21,7 +21,6 @@ export default function AIWidget() {
   const lastMessage = useRef(""); // for retry
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const WEBHOOK_URL = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "";
 
   // Load persisted messages from localStorage on mount
   useEffect(() => {
@@ -77,7 +76,7 @@ export default function AIWidget() {
     setIsOpen(false);
   };
 
-  const callN8N = async (userMessage: string) => {
+  const handleAIQuery = async (userMessage: string) => {
     setIsThinking(true);
     setThoughtTrace([]);
     lastMessage.current = userMessage;
@@ -96,36 +95,22 @@ export default function AIWidget() {
     }
 
     try {
-      const response = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chatInput: userMessage,
-          sessionId: sessionId.current,   // required by n8n Chat Trigger for memory
-        })
-      });
+      let aiResponse = "I am currently disconnected from the main external network. Operating on local databanks.";
+      const lowerInput = userMessage.toLowerCase();
 
-      if (!response.ok) {
-        let errDetail = `HTTP ${response.status}`;
-        try {
-          const errBody = await response.json();
-          errDetail = errBody.message || JSON.stringify(errBody);
-        } catch {
-          errDetail = await response.text();
-        }
-        console.warn("[KAI-01] n8n workflow error:", errDetail);
-        throw new Error(errDetail);
+      if (lowerInput.includes("hello") || lowerInput.includes("hi")) {
+        aiResponse = "Greetings, user. KAI-01 interface is active. How may I assist your navigation today?";
+      } else if (lowerInput.includes("menu") || lowerInput.includes("food") || lowerInput.includes("eat")) {
+        aiResponse = "The menu features a selection of synth-crafted sushi and cyber-steaks. Please refer to the dynamic menu terminal for full specifications.";
+      } else if (lowerInput.includes("reserve") || lowerInput.includes("book") || lowerInput.includes("table")) {
+        aiResponse = "To secure your locus at Neon Tokyo, proceed to the reservation mainframe in the main hub.";
+      } else if (lowerInput.includes("who are you") || lowerInput.includes("what is this")) {
+        aiResponse = "I am KAI-01, the neural concierge of Neon Tokyo. My primary function is to optimize your digital and physical experience in this establishment.";
+      } else if (lowerInput.includes("help")) {
+        aiResponse = "Available local queries: menu databanks, reservation protocols, general system status. Please state your inquiry clearly.";
+      } else {
+        aiResponse = "Input acknowledged: '" + userMessage + "'. However, my cognitive pathways are currently restricted to basic inquiries.";
       }
-
-      const data = await response.json();
-      let aiResponse = '';
-
-      if (data.content?.parts?.length > 0) aiResponse = data.content.parts[0].text;
-      else if (data.output) aiResponse = data.output;
-      else if (data.response) aiResponse = data.response;
-      else if (data.text) aiResponse = data.text;
-      else if (data.message) aiResponse = data.message;
-      else aiResponse = '[DATA LOG]: Response received but format unrecognised.';
 
       setMessages(prev => [...prev, { role: 'ai', content: aiResponse }]);
     } catch (e: unknown) {
@@ -146,14 +131,14 @@ export default function AIWidget() {
     const userMessage = input.trim();
     setInput("");
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    await callN8N(userMessage);
+    await handleAIQuery(userMessage);
   };
 
   const handleRetry = async () => {
     if (!lastMessage.current || isThinking) return;
     // Remove the last error message before retrying
     setMessages(prev => prev.filter((_, i) => !(i === prev.length - 1 && prev[prev.length - 1].isError)));
-    await callN8N(lastMessage.current);
+    await handleAIQuery(lastMessage.current);
   };
 
   const userCount = messages.filter(m => m.role === 'user').length;
@@ -270,10 +255,10 @@ export default function AIWidget() {
                     <div className="max-w-[82%] rounded-xl rounded-bl-sm px-4 py-3 space-y-2"
                       style={{ background: "#1a0808", border: "1px solid rgba(255,60,60,0.45)", boxShadow: "0 0 14px rgba(255,0,0,0.1)" }}>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-red-400 text-[10px] font-black tracking-widest uppercase">⚠ N8N ERROR</span>
+                        <span className="text-red-400 text-[10px] font-black tracking-widest uppercase">⚠ SYSTEM ERROR</span>
                       </div>
                       <p className="text-red-300/80 font-mono text-xs leading-relaxed">{msg.content}</p>
-                      <p className="text-white/30 font-mono text-[10px]">Check your n8n workflow · Verify Gemini credentials</p>
+                      <p className="text-white/30 font-mono text-[10px]">Check your local network connection · Verify system integrity</p>
                       <button
                         suppressHydrationWarning
                         onClick={handleRetry}

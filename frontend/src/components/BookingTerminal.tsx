@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, User, Phone, MessageSquare, Flame } from "lucide-react";
-import { BOOKINGS_KEY } from "./DataLogs";
+const BOOKINGS_KEY = "neon_tokyo_bookings";
 
 export default function BookingTerminal() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
@@ -69,14 +69,7 @@ export default function BookingTerminal() {
       localStorage.setItem(BOOKINGS_KEY, JSON.stringify([...existing, newBooking]));
     } catch { /* storage full or unavailable */ }
 
-    // Send data to n8n webhook (Save to Google Sheet)
     try {
-      await fetch("https://n8n.example.com/webhook/booking", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, time: selectedSlot, guests, spicePreference: spiceLevel, method }),
-      });
-
       if (method === 'whatsapp') {
         const waText = encodeURIComponent(`Initiating Protocol\nName: ${name}\nTime: ${selectedSlot}\nGuests: ${guests}\nSpice: ${spiceLevel}`);
         window.open(`https://wa.me/919999999999?text=${waText}`, "_blank");

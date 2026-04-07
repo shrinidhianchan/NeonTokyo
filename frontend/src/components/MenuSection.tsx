@@ -2,63 +2,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useScroll, useTransform, useMotionValueEvent, useSpring } from "framer-motion";
-import { useRef, useMemo } from "react";
-import * as THREE from "three";
+import { useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import { Flame, Leaf } from "lucide-react";
-
-// ─── 3-D Shape (unchanged) ────────────────────────────────────────────────────
-function MorphingDish({ scrollProgress }: { scrollProgress: ReturnType<typeof useSpring> }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-    uMorph: { value: 0 },
-    uColor1: { value: new THREE.Color("#00ffff") },
-    uColor2: { value: new THREE.Color("#ff007f") },
-  }), []);
-
-  useMotionValueEvent(scrollProgress, "change", (latest: number) => {
-    if (materialRef.current) materialRef.current.uniforms.uMorph.value = latest;
-    if (meshRef.current) meshRef.current.rotation.y = latest * Math.PI * 4;
-  });
-  useFrame((state) => {
-    if (materialRef.current) materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-    if (meshRef.current) meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
-  });
-
-  const vertexShader = `
-    varying vec2 vUv; varying vec3 vNormal; varying vec3 vPosition;
-    uniform float uTime; uniform float uMorph;
-    void main() {
-      vUv = uv; vNormal = normal;
-      vec3 pos = position;
-      float noise = sin(pos.x * 5.0 + uTime) * sin(pos.y * 5.0 + uTime) * uMorph;
-      pos += normal * noise * 3.0; vPosition = pos;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-    }`;
-
-  const fragmentShader = `
-    varying vec2 vUv; varying vec3 vNormal; varying vec3 vPosition;
-    uniform float uTime; uniform float uMorph; uniform vec3 uColor1; uniform vec3 uColor2;
-    void main() {
-      float intensity = dot(normalize(vNormal), vec3(0.0, 0.0, 1.0));
-      vec3 glow = mix(uColor1, uColor2, vUv.y + sin(uTime + vUv.x * 10.0) * 0.5);
-      float scanline = sin(vPosition.y * 50.0 - uTime * 10.0) * 0.1;
-      vec3 finalColor = glow * (intensity + 0.5) + vec3(scanline);
-      gl_FragColor = vec4(finalColor, 1.0 - uMorph * 0.7);
-    }`;
-
-  return (
-    <mesh ref={meshRef}>
-      <torusGeometry args={[2, 0.8, 64, 100]} />
-      <shaderMaterial ref={materialRef} vertexShader={vertexShader} fragmentShader={fragmentShader}
-        uniforms={uniforms} transparent wireframe={false} />
-    </mesh>
-  );
-}
 
 // ─── Menu Data ────────────────────────────────────────────────────────────────
 type MenuItem = {
@@ -188,8 +134,6 @@ function MenuRow({ item, index }: { item: MenuItem; index: number }) {
 // ─── Main Component ────────────────────────────────────────────────────────────
 export default function MenuSection() {
   const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100 });
-  const morphProgress = useTransform(smoothProgress, [0.4, 0.8], [0, 1]);
   const [activeCategory, setActiveCategory] = useState<string>("Starters");
 
   const filteredItems = menuItems.filter((i) => i.category === activeCategory);
@@ -256,15 +200,7 @@ export default function MenuSection() {
           </div>
         </div>
 
-        {/* ── Right: 3D Canvas ── */}
-        <div className="hidden md:flex flex-1 h-full w-full relative -z-0">
-          <Canvas camera={{ position: [0, 0, 7] }}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={2} color="#00ffff" />
-            <pointLight position={[-10, -10, -10]} intensity={2} color="#ff007f" />
-            <MorphingDish scrollProgress={morphProgress as ReturnType<typeof useSpring>} />
-          </Canvas>
-        </div>
+
       </div>
     </div>
   );
